@@ -16,18 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from forum.viewsets import UserViewSet,GroupViewSet,PostViewSet,CommentViewSet
+from forum.viewsets import UserViewSet, GroupViewSet, PostViewSet, CommentViewSet
 
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'group', GroupViewSet)
-router.register(r'posts', PostViewSet)
-router.register(r'comment', CommentViewSet)
+router.register(r"users", UserViewSet)
+router.register(r"group", GroupViewSet)
+router.register(r"posts", PostViewSet)
+router.register(r"comment", CommentViewSet)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include(router.urls)),
-    path('api/', include('forum.urls')),
+    path("admin/", admin.site.urls),
+    path("", include(router.urls)),
+    path("api/", include("forum.urls")),
 ]

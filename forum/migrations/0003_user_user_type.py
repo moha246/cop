@@ -6,13 +6,24 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('forum', '0002_comment'),
+        ("forum", "0002_comment"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='user_type',
-            field=models.CharField(blank=True, choices=[('Admin', 'Admin'), ('Mentor', 'Mentor'), ('Mentee', 'Mentee'), ('Consortium Member', 'Consortium Member')], default='Mentee', max_length=20, null=True),
+            model_name="user",
+            name="user_type",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("Admin", "Admin"),
+                    ("Mentor", "Mentor"),
+                    ("Mentee", "Mentee"),
+                    ("Consortium Member", "Consortium Member"),
+                ],
+                default="Mentee",
+                max_length=20,
+                null=True,
+            ),
         ),
     ]

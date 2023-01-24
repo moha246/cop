@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
 # from django.contrib.auth.models import User
 
 ADMIN = "Admin"
@@ -14,26 +15,45 @@ USER_TYPES = (
     (CONSORTIUM_MEMBER, _(CONSORTIUM_MEMBER)),
 )
 
+
+class BaseModel(models.Model):
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        User, related_name="creator", on_delete=models.CASCADE
+    )
+    updated_by = models.ForeignKey(
+        User, related_name="modifier", on_delete=models.CASCADE
+    )
+
+
 class User(models.Model):
     username = models.CharField(max_length=255)
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     password = models.CharField(max_length=255)
-    user_type = models.CharField(max_length=20, null=True, blank=True, choices=USER_TYPES, default=MENTEE)
+    user_type = models.CharField(
+        max_length=20, null=True, blank=True, choices=USER_TYPES, default=MENTEE
+    )
 
-class Group(models.Model):
+
+class Admins(models.Model):
+    members = models.ManyToManyField(User, related_name="admin_groups")
+
+
+class Group(BaseModel):
     name = models.CharField(max_length=255)
-    description = models.TextField()
-    members = models.ManyToManyField(User, related_name='groups')
+    description = models.TextField(max_length=255)
+    admins = models.OneToOneField(
+        AdminGroup, related_name="admins", on_delete=models.CASCADE
+    )
+    members = models.ManyToManyField(User, related_name="groups")
 
 
-class Post(models.Model):
-    user = models.ForeignKey(User, related_name='posts', on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, related_name='posts', on_delete=models.CASCADE)
-    content = models.TextField()
+class Post(BaseModel):
+    group = models.ForeignKey(Group, related_name="posts", on_delete=models.CASCADE)
+    content = models.TextField(max_length=800)
 
-class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)    
+
+class Comment(BaseModel):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
+    content = models.TextField(max_length=450)

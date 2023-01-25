@@ -4,7 +4,9 @@ from . import viewsets
 
 urlpatterns = [
     # path('users/', viewsets.UserView.as_view(), name='users'),
-    path("login/", viewsets.PhemTokenPairView.as_view(), name="login"),
+    path("login/", viewsets.JWTTokenObtainPairSerializer.as_view(), name="token_obtain_pair"),
+    path('confirm/', viewsets.ConfirmAccountView.as_view(), name="confirm_accout"),
+    path('register/',viewsets.RegisterView.as_view(), name='register'),
     # path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     # path('groups/', views.UserGroupView.as_view(), name='user-groups'),
     # path('user_types/', views.user_types, name='user-types'),

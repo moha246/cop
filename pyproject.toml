@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "cop"
+version = "0.1.0"
+description = "The COP application for PHEM"
+authors = ["code-intensive <justtega97@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Django = "^4.1.5"
+djangorestframework-simplejwt = "^5.2.2"
+django-restframework = "^0.0.1"
+isort = "^5.11.4"
+black = "^22.12.0"
+pytest = "^7.2.1"
+pytest-django = "^4.5.2"
+drf-spectacular = {extras = ["sidecar"], version = "^0.25.1"}
+drf-spectacular-sidecar = "^2022.12.1"
+python-dotenv = "^0.21.1"
+django-cors-headers = "^3.13.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

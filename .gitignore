@@ -160,3 +160,8 @@ snap_shot.db
 logs
 .vscode/
 .DS_Store
+
+
+# Django static and templates
+static/*
+*.sqlite3

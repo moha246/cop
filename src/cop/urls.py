@@ -1,25 +1,26 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path, include
+from django.urls import include, path
 from django.views import defaults as default_views
-
 from drf_spectacular.views import (
     SpectacularAPIView,
-    SpectacularSwaggerView,
     SpectacularRedocView,
+    SpectacularSwaggerView,
 )
+
+from src.cop.utils import prefix_api_endpoint
 
 urlpatterns = [
     path("auth-views/", include("rest_framework.urls")),
-    path("api/auth/", include("auth.urls")),
-    path("api/schema/download", SpectacularAPIView.as_view(), name="schema"),
+    path(prefix_api_endpoint('auth'), include("auth.urls")),
+    path(prefix_api_endpoint("schema/download"), SpectacularAPIView.as_view(), name="schema"),
     path(
-        "api/schema/swagger-ui/",
+        prefix_api_endpoint("schema/swagger-ui"),
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="swagger-ui",
     ),
     path(
-        "api/schema/redoc/",
+        prefix_api_endpoint("schema/redoc"),
         SpectacularRedocView.as_view(url_name="schema"),
         name="redoc",
     ),

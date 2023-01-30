@@ -1,15 +1,16 @@
+from datetime import timedelta
 from os import getenv
 from pathlib import Path
-from datetime import timedelta
+import sys
 
 from dotenv import load_dotenv
-
 
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+APPS_DIR = BASE_DIR.joinpath("src", "app")
+sys.path.insert(0, APPS_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -263,11 +264,14 @@ SIMPLE_JWT = {
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
+    "django.contrib.auth.backends.ModelBackend",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
-LOGIN_REDIRECT_URL = '/api/schema/swagger-ui/'
+LOGIN_REDIRECT_URL = "/api/schema/swagger-ui/"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
-LOGIN_URL = '/auth-views/login/'
+LOGIN_URL = "/auth-views/login/"
+
+# API versioning
+API_VERSION = "v1"

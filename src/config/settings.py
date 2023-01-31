@@ -154,13 +154,6 @@ SECURE_BROWSER_XSS_FILTER = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options
 X_FRAME_OPTIONS = "DENY"
 
-# EMAIL
-# ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-EMAIL_BACKEND = getenv(
-    "DJANGO_EMAIL_BACKEND",
-    default="django.core.mail.backends.console.EmailBackend",
-)
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
 EMAIL_TIMEOUT = 5
 
@@ -287,3 +280,16 @@ COMMITTEE_OF_PRACTICE = {
     "MENTORS_PER_FORUM": 2,
     "MENTEES_PER_FORUM": 5,
 }
+
+# EMAIL
+# ------------------------------------------------------------------------------
+# SendGrid configurations
+# https://docs.sendgrid.com/for-developers/sending-email/django
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST = 'smtp.sendgrid.net'
+SENDGRID_API_KEY = getenv("SENDGRID_API_KEY")
+DEFAULT_FROM_EMAIL = getenv("SENDGRID_DEFAULT_FROM_EMAIL")
+EMAIL_BACKEND = 'sendgrid.mail.backends.sendgrid.SendgridBackend'
+SENDGRID_SANDBOX_MODE_IN_DEBUG = getenv("SENDGRID_SANDBOX_MODE_IN_DEBUG", DEBUG)

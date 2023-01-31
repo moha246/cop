@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from src.users.api.serializer import UserSerializer
+from src.auth.permissions.users import IsAdminOrReadOnly
 
 User = get_user_model()
 
@@ -23,7 +24,7 @@ class UserViewSet(
 
     model = User
     serializer_class = UserSerializer
-    # permission_classes = IsAdminOrReadonly
+    permission_classes = (IsAdminOrReadOnly,)
 
     @action(detail=False, methods=["GET"])
     def me(self, request) -> Response:

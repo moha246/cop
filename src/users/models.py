@@ -21,3 +21,18 @@ class User(AbstractUser):
     role = models.CharField(
         _("role"), max_length=20, choices=ROLES.choices, default=ROLES.MENTEE
     )
+
+    @classmethod
+    def get_response_fields(cls) -> tuple[str]:
+        return (
+            "id",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "role",
+            "is_active",
+            "is_verified",
+            "last_login",
+            "date_joined",
+        )

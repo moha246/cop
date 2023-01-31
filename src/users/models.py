@@ -1,19 +1,8 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-
-ADMIN = "Admin"
-MENTOR = "Mentor"
-MENTEE = "Mentee"
-CONSORTIUM_MEMBER = "Consortium Member"
-
-UserRoles = (
-    (ADMIN, _(ADMIN)),
-    (MENTOR, _(MENTOR)),
-    (MENTEE, _(MENTEE)),
-    (CONSORTIUM_MEMBER, _(CONSORTIUM_MEMBER)),
-)
+from src.auth.roles import UserRoles
 
 
 class User(AbstractUser):
@@ -24,5 +13,11 @@ class User(AbstractUser):
     Username and password are required. Other fields are optional.
     """
 
+    ROLES = UserRoles
+
+    last_name = models.CharField(_("last name"), max_length=150)
+    first_name = models.CharField(_("first name"), max_length=150)
     is_verified = models.BooleanField(_("verified"), default=False)
-    role = models.CharField(_("role"), max_length=20, choices=UserRoles, default=MENTEE)
+    role = models.CharField(
+        _("role"), max_length=20, choices=ROLES.choices, default=ROLES.MENTEE
+    )

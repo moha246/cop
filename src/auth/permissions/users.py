@@ -1,16 +1,17 @@
-from rest_framework.permissions import BasePermission
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 
-from src.users.models import UserRoles
+from src.auth.utils import has_admin_privileges
 
 
-class IsAuthenticatedOrReadOnly(BasePermission):
+class IsAdminOrReadOnly(BasePermission):
     """
-    The request is authenticated as a user, or is a read-only request.
+    The requesting user has an admin role or is a
+    read-only request to get a single user.
     """
 
     def has_permission(self, request, view):
         return bool(
-            request.method in SAFE_METHODS
-            or request.user
-            and request.user.role == UserRoles.ADMIN
+            view.action != "list"
+            and request.method in SAFE_METHODS
+            or has_admin_privileges(request.user)
         )

@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from src.auth.roles import UserRoles
+from auth.roles import UserRoles
 
 
 class User(AbstractUser):
@@ -36,3 +36,7 @@ class User(AbstractUser):
             "last_login",
             "date_joined",
         )
+
+    @property
+    def full_name(self) -> str:
+        return f"{ self.last_name } { self.first_name }".title()

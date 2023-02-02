@@ -8,8 +8,10 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
-from src.config.routes.utils import prefix_api_endpoint
-from src.users.api.urls import user_router
+from config.routes.utils import prefix_api_endpoint
+from src.forums.api.router import forums_router
+from tasks.api.router import tasks_router
+from users.api.router import users_router
 
 auth_view_routes = [
     path("auth/views/", include("rest_framework.urls")),
@@ -17,7 +19,9 @@ auth_view_routes = [
 
 core_api_routes = [
     path(prefix_api_endpoint("auth"), include("auth.api.urls")),
-    path(prefix_api_endpoint("users"), include(user_router.urls)),
+    path(prefix_api_endpoint("users"), include(users_router.urls)),
+    path(prefix_api_endpoint("tasks"), include(tasks_router.urls)),
+    path(prefix_api_endpoint("forums"), include(forums_router.urls)),
 ]
 
 open_api_routes = [
@@ -38,7 +42,7 @@ open_api_routes = [
     ),
 ]
 
-urlpatterns = sum([auth_view_routes, core_api_routes, open_api_routes], [])
+urlpatterns = auth_view_routes + core_api_routes + open_api_routes
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

@@ -1,4 +1,5 @@
 from rest_framework.permissions import SAFE_METHODS, BasePermission
+
 from src.auth.utils import has_admin_privileges
 
 

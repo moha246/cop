@@ -13,7 +13,7 @@ API_VERSION = "v1"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-APPS_DIR = BASE_DIR.joinpath("src", "app")
+APPS_DIR = BASE_DIR.joinpath("src")
 sys.path.insert(0, APPS_DIR)
 
 # Quick-start development settings - unsuitable for production
@@ -47,7 +47,9 @@ INSTALLED_APPS = [
     "drf_spectacular_sidecar",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
-    "users",
+    "users.apps.UsersConfig",
+    "forums.apps.ForumsConfig",
+    "tasks.apps.TasksConfig",
 ]
 
 MIDDLEWARE = [
@@ -285,11 +287,15 @@ COMMITTEE_OF_PRACTICE = {
 # ------------------------------------------------------------------------------
 # SendGrid configurations
 # https://docs.sendgrid.com/for-developers/sending-email/django
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST = 'smtp.sendgrid.net'
-SENDGRID_API_KEY = getenv("SENDGRID_API_KEY")
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = "apikey"
+# EMAIL_HOST = "smtp.sendgrid.net"
+# SENDGRID_API_KEY = getenv("SENDGRID_API_KEY")
 DEFAULT_FROM_EMAIL = getenv("SENDGRID_DEFAULT_FROM_EMAIL")
-EMAIL_BACKEND = 'sendgrid.mail.backends.sendgrid.SendgridBackend'
-SENDGRID_SANDBOX_MODE_IN_DEBUG = getenv("SENDGRID_SANDBOX_MODE_IN_DEBUG", DEBUG)
+# EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+# SENDGRID_SANDBOX_MODE_IN_DEBUG = getenv("SENDGRID_SANDBOX_MODE_IN_DEBUG", False)
+SUPPORT_EMAIL = "<support@cop.org>"
+PLATFORM_TEAM = "<core.team@cop.org>"
+PLATFORM_NAME = "Committee of Practice"
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

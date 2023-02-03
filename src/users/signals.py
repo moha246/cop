@@ -10,6 +10,9 @@ User = get_user_model()
 
 @receiver(post_save, sender=User)
 def send_user_pending_verification_mail(sender, instance: User, **kwargs) -> int:
+    if instance.is_superuser or instance.role == instance.ROLES.ADMIN:
+        return
+
     subject = "Account Request Successful"
 
     message = f"""Dear { instance.full_name },

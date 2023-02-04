@@ -1,8 +1,11 @@
 from django.contrib.auth import get_user_model
 
+from auth.roles import UserRoles
+
 User = get_user_model()
 
 
 def has_admin_privileges(user: User) -> User | None:
-    if user and all((user.is_authenticated, user.role == UserRoles.ADMIN)):
-        return user
+    if not user or user.is_anonymous:
+        return None
+    return user.role == UserRoles.ADMIN or user.is_superuser

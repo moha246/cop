@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 
-from tasks.api.viewset import TaskViewSet
+from tasks.api.viewsets import TaskViewSet
 
 app_name = "tasks"
 

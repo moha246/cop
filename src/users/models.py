@@ -1,8 +1,9 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from auth.roles import UserRoles
+from authentication.roles import UserRoles
 
 
 class User(AbstractUser):
@@ -40,3 +41,6 @@ class User(AbstractUser):
     @property
     def full_name(self) -> str:
         return f"{ self.last_name } { self.first_name }".title()
+
+    def get_absolute_url(self):
+        return reverse("users-detail", kwargs={"user_id": self.pk})

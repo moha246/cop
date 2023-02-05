@@ -4,8 +4,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from auth.permissions.permissions import IsAdminOrReadOnly
-from users.api.serializer import UserSerializer
+from authentication.permissions.permissions import IsAdminOrReadOnly
+from users.api.serializers import UserSerializer
 
 User = get_user_model()
 
@@ -23,6 +23,7 @@ class UserViewSet(
     """
 
     model = User
+    lookup_url_kwarg = "user_id"
     serializer_class = UserSerializer
     permission_classes = (IsAdminOrReadOnly,)
 

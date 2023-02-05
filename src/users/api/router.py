@@ -1,6 +1,6 @@
 from rest_framework.routers import SimpleRouter
 
-from users.api.viewset import UserViewSet
+from users.api.viewsets import UserViewSet
 
 app_name = "users"
 

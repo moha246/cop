@@ -1,7 +1,7 @@
-import sys
 from datetime import timedelta
 from os import getenv
 from pathlib import Path
+import sys
 
 from dotenv import load_dotenv
 
@@ -41,12 +41,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_extensions",
     "rest_framework",
     "drf_spectacular",
     "corsheaders",
     "drf_spectacular_sidecar",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
+    "authentication.apps.AuthenticationConfig",
     "users.apps.UsersConfig",
     "forums.apps.ForumsConfig",
     "tasks.apps.TasksConfig",
@@ -156,20 +158,6 @@ SECURE_BROWSER_XSS_FILTER = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options
 X_FRAME_OPTIONS = "DENY"
 
-# https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
-EMAIL_TIMEOUT = 5
-
-# ADMIN
-# ------------------------------------------------------------------------------
-
-# https://docs.djangoproject.com/en/dev/ref/settings/#admins
-ADMINS = [
-    ("code-intensive", "justtega97@gmail.com"),
-    ("alhaji-dalhatu", "mohmusa@gmail.com"),
-]
-# https://docs.djangoproject.com/en/dev/ref/settings/#managers
-MANAGERS = ADMINS
-
 # LOGGING
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#logging
@@ -227,7 +215,7 @@ SPECTACULAR_SETTINGS = {
     "TITLE": "PHEM's COP API",
     "DESCRIPTION": "Documentation of API endpoints of PHEM's COP",
     "VERSION": "1.0.0",
-    "SERVE_PERMISSIONS": ["rest_framework.permissions.AllowAny"],
+    "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAuthenticated"],
     "SERVERS": [
         {"url": "http://127.0.0.1:8000", "description": "Local Development server"},
     ],
@@ -275,6 +263,7 @@ AUTH_USER_MODEL = "users.User"
 LOGIN_REDIRECT_URL = f"/api/{API_VERSION}/schema/swagger-ui/"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
 LOGIN_URL = f"/api/{API_VERSION}/views/login/"
+LOGOUT_REDIRECT_URL = "/auth/views/login/"
 
 
 # Commitee of practice settings
@@ -287,15 +276,23 @@ COMMITTEE_OF_PRACTICE = {
 # ------------------------------------------------------------------------------
 # SendGrid configurations
 # https://docs.sendgrid.com/for-developers/sending-email/django
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = "apikey"
-# EMAIL_HOST = "smtp.sendgrid.net"
-# SENDGRID_API_KEY = getenv("SENDGRID_API_KEY")
+# https://simpleit.rocks/python/django/adding-email-to-django-the-easiest-way/#send-emails-from-own-domain
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "apikey"
+EMAIL_HOST = "smtp.sendgrid.net"
+SENDGRID_API_KEY = getenv("SENDGRID_API_KEY")
 DEFAULT_FROM_EMAIL = getenv("SENDGRID_DEFAULT_FROM_EMAIL")
-# EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-# SENDGRID_SANDBOX_MODE_IN_DEBUG = getenv("SENDGRID_SANDBOX_MODE_IN_DEBUG", False)
+EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+SENDGRID_SANDBOX_MODE_IN_DEBUG = getenv("SENDGRID_SANDBOX_MODE_IN_DEBUG", False)
+SENDGRID_ECHO_TO_STDOUT = getenv("SENDGRID_ECHO_TO_STDOUT")
 SUPPORT_EMAIL = "<support@cop.org>"
 PLATFORM_TEAM = "<core.team@cop.org>"
 PLATFORM_NAME = "Committee of Practice"
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+SERVER_EMAIL = getenv("SERVER_EMAIL")
+EMAIL_TIMEOUT = 5
+ADMINS = [
+    ("code-intensive", "justtega97@gmail.com"),
+    ("alhaji-dalhatu", "mohmusa@gmail.com"),
+]
+MANAGERS = ADMINS

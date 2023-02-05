@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 
-from forums.api.viewset import ForumViewSet
+from forums.api.viewsets import ForumViewSet
 
 app_name = "forums"
 

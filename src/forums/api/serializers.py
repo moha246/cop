@@ -8,6 +8,7 @@ from users.api.serializers import UserSerializer
 
 class ForumSerializer(ModelSerializer):
     members = UserSerializer(many=True)
+
     class Meta:
         model = Forum
         fields = "__all__"

@@ -43,4 +43,4 @@ class User(AbstractUser):
         return f"{ self.last_name } { self.first_name }".title()
 
     def get_absolute_url(self):
-        return reverse("users-detail", kwargs={"user_id": self.pk})
+        return reverse("users:users-detail", kwargs={"user_id": self.pk})

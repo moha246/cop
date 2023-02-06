@@ -7,11 +7,11 @@ from rest_framework.viewsets import ModelViewSet
 
 from drf_spectacular.utils import extend_schema_view
 
-from authentication.permissions.users import IsAdminOrReadOnly
 from forums.api.serializers import ForumSerializer
 from forums.models import Forum
 from users.api.serializers import UserSerializer
 from forums.schemas import members_schema
+from src.authentication.permissions.permissions import AdminOnly
 
 
 @extend_schema_view(
@@ -21,7 +21,7 @@ from forums.schemas import members_schema
 )
 class ForumViewSet(ModelViewSet):
     serializer_class = ForumSerializer
-    permission_classes = (IsAdminOrReadOnly,)
+    permission_classes = (AdminOnly,)
     lookup_url_kwarg = "forum_id"
 
     def get_queryset(self):
@@ -36,8 +36,10 @@ class ForumViewSet(ModelViewSet):
 
     @action(detail=True, methods=("PUT",), url_path="members/<int:member_id>/add")
     def members_add(self, request: Request, forum_id: int, member_id: int) -> Response:
-        forum: Forum = self.get_object()
+        forum = self.get_object()
+        print(forum)
         member = get_object_or_404(User, id=member_id)
+        print(member)
         forum.members.add(member)
         return Response(UserSerializer(forum.members, many=True).data)
 
@@ -45,7 +47,7 @@ class ForumViewSet(ModelViewSet):
     def members_remove(
         self, request: Request, forum_id: int, member_id: int
     ) -> Response:
-        forum: Forum = self.get_object()
+        forum = self.get_object()
         member = get_object_or_404(forum.members, id=member_id)
         forum.members.remove(member)
         return Response(UserSerializer(forum.members, many=True).data)

@@ -17,12 +17,12 @@ urlpatterns = [
     path("sign-up/", SignUpViewSet.as_view(dict(post="create")), name="sign-up"),
     path(
         "verification/<int:user_id>/accept/",
-        VerificationViewSet.as_view(dict(post="accept")),
+        VerificationViewSet.as_view(dict(put="accept")),
         name="accept",
     ),
     path(
         "verification/<int:user_id>/decline/",
-        VerificationViewSet.as_view(dict(post="decline")),
+        VerificationViewSet.as_view(dict(delete="decline")),
         name="decline",
     ),
 ]

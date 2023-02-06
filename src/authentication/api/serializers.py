@@ -38,14 +38,3 @@ class SignUpSerializer(serializers.ModelSerializer):
         if password2 != password:
             raise serializers.ValidationError("Passwords do not match")
         return password2
-
-
-class VerificationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = User.get_response_fields()
-        read_only_fields = ("__all__",)
-        extra_kwargs = {
-            "is_verified": {"read_only": False},
-            "is_active": {"read_only": False},
-        }

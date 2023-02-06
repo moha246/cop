@@ -9,19 +9,16 @@ from drf_spectacular.views import (
 )
 
 from config.routes.utils import prefix_api_endpoint
-from forums.api.router import forums_router
-from tasks.api.router import tasks_router
-from users.api.router import users_router
 
 auth_view_routes = [
     path("auth/views/", include("rest_framework.urls")),
 ]
 
 core_api_routes = [
-    path(prefix_api_endpoint("auth"), include("authentication.api.urls")),
-    path(prefix_api_endpoint("users"), include(users_router.urls)),
-    path(prefix_api_endpoint("tasks"), include(tasks_router.urls)),
-    path(prefix_api_endpoint("forums"), include(forums_router.urls)),
+    path(prefix_api_endpoint("auth"), include("authentication.urls")),
+    path(prefix_api_endpoint("users"), include("users.urls")),
+    path(prefix_api_endpoint("tasks"), include("tasks.urls")),
+    path(prefix_api_endpoint("forums"), include("forums.urls")),
 ]
 
 open_api_routes = [

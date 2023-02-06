@@ -1,11 +1,13 @@
 from django.db import models
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
-from core.models import BaseTimeStampModel
-from core.str_models import USER_MODEL
+from django_extensions.db.models import TimeStampedModel
 
 
-class Forum(BaseTimeStampModel):
-    name = models.CharField(_("forum name"), max_length=65)
-    members = models.ManyToManyField(USER_MODEL, related_name="forums")
-    creator = models.CharField(_("Creator"), max_length=20)
+class Forum(TimeStampedModel):
+    name = models.CharField(_("name"), max_length=65)
+    members = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="forums", verbose_name=_("members")
+    )
+    creator = models.CharField(_("creator"), max_length=20)

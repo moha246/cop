@@ -1,13 +1,15 @@
-from django.contrib.auth import get_user_model
 from django.db import models
+from django.conf import settings
 
-from core.models import BaseTimeStampModel
-
-User = get_user_model()
+from django_extensions.db.models import TimeStampedModel
 
 
-class Task(BaseTimeStampModel):
+class Task(TimeStampedModel):
     assigner = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="tasks_assigned"
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="tasks_assigned",
     )
-    assignee = models.ManyToManyField(User, related_name="assigned_tasks")
+    assignee = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="assigned_tasks"
+    )

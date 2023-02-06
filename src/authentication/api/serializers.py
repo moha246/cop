@@ -2,7 +2,10 @@ from typing import Any
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+
 from rest_framework import serializers
+from authentication.signals.senders import email_verification_signal
+from authentication.enums import SignalType
 
 User = get_user_model()
 
@@ -27,6 +30,7 @@ class SignUpSerializer(serializers.ModelSerializer):
         user = User(is_active=False, **validated_data)
         user.set_password(password)
         user.save()
+        email_verification_signal.send(User, user=user, signal_type=SignalType.PENDING)
         return user
 
     def validate_password2(self, password2: str) -> str:

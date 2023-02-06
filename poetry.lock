@@ -180,6 +180,21 @@ files = [
 Django = ">=3.2"
 
 [[package]]
+name = "django-extensions"
+version = "3.2.1"
+description = "Extensions for Django"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "django-extensions-3.2.1.tar.gz", hash = "sha256:2a4f4d757be2563cd1ff7cfdf2e57468f5f931cc88b23cf82ca75717aae504a4"},
+    {file = "django_extensions-3.2.1-py3-none-any.whl", hash = "sha256:421464be390289513f86cb5e18eb43e5dc1de8b4c27ba9faa3b91261b0d67e09"},
+]
+
+[package.dependencies]
+Django = ">=3.2"
+
+[[package]]
 name = "django-restframework"
 version = "0.0.1"
 description = "django-restframework"
@@ -863,4 +878,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "40545ae242c6039d52ce2565b92534fa5601e67df32c2e73baad59f33fca263d"
+content-hash = "2e4fa72aea235fa65a6282210de89fe6afbc15ac931442ce3d99865d898219fa"

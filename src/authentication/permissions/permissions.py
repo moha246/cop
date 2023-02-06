@@ -1,5 +1,6 @@
 from rest_framework.permissions import SAFE_METHODS, BasePermission
-from src.auth.utils import has_admin_privileges
+
+from authentication.utils import has_admin_privileges
 
 
 class IsAdminOrReadOnly(BasePermission):
@@ -8,9 +9,14 @@ class IsAdminOrReadOnly(BasePermission):
     read-only request to get a single user.
     """
 
-    def has_permission(self, request, view):
+    def has_permission(self, request, view) -> bool:
         return bool(
             view.action != "list"
             and request.method in SAFE_METHODS
             or has_admin_privileges(request.user)
         )
+
+
+class AdminOnly(BasePermission):
+    def has_permission(self, request, view) -> bool:
+        return has_admin_privileges(request.user)

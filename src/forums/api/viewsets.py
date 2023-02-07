@@ -1,15 +1,19 @@
+from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema_view
+from rest_framework import request
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
+from authentication.permissions.permissions import AdminOnly
 from forums.api.serializers import ForumSerializer
 from forums.models import Forum
 from forums.schemas import members_schema
-from authentication.permissions.permissions import AdminOnly
 from users.api.serializers import UserSerializer
+
+User = get_user_model()
 
 
 @extend_schema_view(
@@ -32,15 +36,22 @@ class ForumViewSet(ModelViewSet):
     def members(self, request: Request, forum_id: int) -> Response:
         return Response(UserSerializer(self.get_object().members, many=True).data)
 
-    @action(detail=True, methods=("PUT",), url_path="members/<int:member_id>/add")
+    @action(
+        detail=True,
+        methods=("PUT",),
+        url_path="members/(?P<member_id>[0-9]+)/add",
+    )
     def members_add(self, request: Request, forum_id: int, member_id: int) -> Response:
-        forum = get_object_or_404(Forum, id=forum_id)
+        forum = self.get_object()
         member = get_object_or_404(User, id=member_id)
-        print(member)
         forum.members.add(member)
         return Response(UserSerializer(forum.members, many=True).data)
 
-    @action(detail=True, methods=("DELETE",), url_path="members/<int:member_id>/remove")
+    @action(
+        detail=True,
+        methods=("DELETE",),
+        url_path="members/(?P<member_id>[0-9]+)/remove",
+    )
     def members_remove(
         self, request: Request, forum_id: int, member_id: int
     ) -> Response:

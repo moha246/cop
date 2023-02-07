@@ -61,6 +61,6 @@ if settings.DEBUG:
             kwargs={"exception": Exception("Page not Found")},
         ),
         path("500/", default_views.server_error),
-    ] + static(
-        settings.MEDIA_URL, document_root=settings.STATIC_URL
-    )  # type: ignore
+    ] # + static(
+        # settings.MEDIA_URL, document_root=settings.STATIC_URL
+    # )  # type: ignore

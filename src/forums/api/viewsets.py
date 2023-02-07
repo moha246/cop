@@ -1,17 +1,15 @@
 from django.shortcuts import get_object_or_404
-
+from drf_spectacular.utils import extend_schema_view
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from drf_spectacular.utils import extend_schema_view
-
 from forums.api.serializers import ForumSerializer
 from forums.models import Forum
-from users.api.serializers import UserSerializer
 from forums.schemas import members_schema
-from src.authentication.permissions.permissions import AdminOnly
+from authentication.permissions.permissions import AdminOnly
+from users.api.serializers import UserSerializer
 
 
 @extend_schema_view(
@@ -36,8 +34,7 @@ class ForumViewSet(ModelViewSet):
 
     @action(detail=True, methods=("PUT",), url_path="members/<int:member_id>/add")
     def members_add(self, request: Request, forum_id: int, member_id: int) -> Response:
-        forum = self.get_object()
-        print(forum)
+        forum = get_object_or_404(Forum, id=forum_id)
         member = get_object_or_404(User, id=member_id)
         print(member)
         forum.members.add(member)

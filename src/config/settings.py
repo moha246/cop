@@ -1,7 +1,7 @@
+import sys
 from datetime import timedelta
 from os import getenv
 from pathlib import Path
-import sys
 
 from dotenv import load_dotenv
 
@@ -98,6 +98,16 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'cop',
+#         'USER': 'cop',
+#         'PASSWORD': 'cop',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -284,7 +294,9 @@ EMAIL_HOST = "smtp.sendgrid.net"
 SENDGRID_API_KEY = getenv("SENDGRID_API_KEY")
 DEFAULT_FROM_EMAIL = getenv("SENDGRID_DEFAULT_FROM_EMAIL")
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-SENDGRID_SANDBOX_MODE_IN_DEBUG = bool(getenv("SENDGRID_SANDBOX_MODE_IN_DEBUG", False))
+SENDGRID_SANDBOX_MODE_IN_DEBUG = (
+    bool(getenv("SENDGRID_SANDBOX_MODE_IN_DEBUG", False))
+)
 SENDGRID_ECHO_TO_STDOUT = getenv("SENDGRID_ECHO_TO_STDOUT")
 SUPPORT_EMAIL = "<support@cop.org>"
 PLATFORM_TEAM = "<core.team@cop.org>"

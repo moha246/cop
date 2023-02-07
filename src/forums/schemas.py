@@ -1,4 +1,5 @@
-from drf_spectacular.utils import extend_schema, OpenApiExample
+from drf_spectacular.utils import OpenApiExample, extend_schema
+
 from users.api.serializers import UserSerializer
 
 members_schema = extend_schema(

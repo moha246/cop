@@ -2,10 +2,10 @@ from typing import Any
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
-
 from rest_framework import serializers
-from authentication.signals.senders import email_verification_signal
+
 from authentication.enums import SignalType
+from authentication.signals.senders import email_verification_signal
 
 User = get_user_model()
 

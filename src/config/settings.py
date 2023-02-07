@@ -23,7 +23,7 @@ sys.path.insert(0, APPS_DIR)
 SECRET_KEY = getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(getenv("DJANGO_DEBUG", False))
+DEBUG = False # bool(getenv("DJANGO_DEBUG", False))
 
 # Since allowed hosts should hold a list of hosts, the list comprehension
 # helps to handle that, defaulting to an empty list if env key is missing
@@ -284,11 +284,11 @@ EMAIL_HOST = "smtp.sendgrid.net"
 SENDGRID_API_KEY = getenv("SENDGRID_API_KEY")
 DEFAULT_FROM_EMAIL = getenv("SENDGRID_DEFAULT_FROM_EMAIL")
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-SENDGRID_SANDBOX_MODE_IN_DEBUG = bool(getenv("SENDGRID_SANDBOX_MODE_IN_DEBUG", False))
+SENDGRID_SANDBOX_MODE_IN_DEBUG = False #bool(getenv("SENDGRID_SANDBOX_MODE_IN_DEBUG", False))
 SENDGRID_ECHO_TO_STDOUT = getenv("SENDGRID_ECHO_TO_STDOUT")
 SUPPORT_EMAIL = "<support@cop.org>"
 PLATFORM_TEAM = "<core.team@cop.org>"
-PLATFORM_NAME = "Committee of Practice"
+PLATFORM_NAME = "PHEM Community of Practice"
 SERVER_EMAIL = getenv("SERVER_EMAIL")
 EMAIL_TIMEOUT = 5
 ADMINS = [

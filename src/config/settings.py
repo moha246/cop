@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "forums.apps.ForumsConfig",
     "tasks.apps.TasksConfig",
+    "posts.apps.PostsConfig",
+    "comments.apps.CommentsConfig"
 ]
 
 MIDDLEWARE = [

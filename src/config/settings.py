@@ -1,7 +1,7 @@
+import sys
 from datetime import timedelta
 from os import getenv
 from pathlib import Path
-import sys
 
 from dotenv import load_dotenv
 
@@ -98,6 +98,16 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'cop',
+#         'USER': 'cop',
+#         'PASSWORD': 'cop',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

@@ -1,23 +1,20 @@
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-
-from rest_framework.status import HTTP_204_NO_CONTENT
+from drf_spectacular.utils import extend_schema
 from rest_framework.decorators import action
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.status import HTTP_204_NO_CONTENT
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework.viewsets import GenericViewSet
 
-from drf_spectacular.utils import extend_schema
-
 from authentication.api.serializers import SignUpSerializer
+from authentication.enums import SignalType
 from authentication.permissions.permissions import AdminOnly
 from authentication.signals.senders import email_verification_signal
-from authentication.enums import SignalType
 from users.api.serializers import UserSerializer
-
 
 User = get_user_model()
 
@@ -48,7 +45,7 @@ class VerificationViewSet(GenericViewSet):
         )
         return Response(
             data=self.get_serializer(user).data,
-            )
+        )
 
     @action(detail=True, methods=("DELETE",))
     def decline(self, *args, **kwargs) -> Response:

@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core.mail import send_mail, mail_admins
+from django.core.mail import mail_admins, send_mail
 from django.dispatch import receiver
 
 from authentication.enums import SignalType
@@ -19,7 +19,8 @@ def pending_verification_mail(
     if is_an_admin or signal_type != SignalType.PENDING:
         return None
 
-    if  is_active_and_verified: return -1
+    if is_active_and_verified:
+        return -1
 
     subject = "Account Request Pending"
 
@@ -103,7 +104,8 @@ def verification_success_mail(
     if is_an_admin or signal_type != SignalType.ACCEPTED:
         return None
 
-    if not is_active_and_verified: return -1
+    if not is_active_and_verified:
+        return -1
 
     subject = "Account Request Successful"
 
@@ -155,7 +157,8 @@ def verification_declined_mail(
     if is_an_admin or signal_type != SignalType.DECLINED:
         return None
 
-    if  is_active_and_verified: return -1
+    if is_active_and_verified:
+        return -1
 
     subject = "Account Request Declined"
 

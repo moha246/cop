@@ -8,11 +8,11 @@ User = get_user_model()
 
 
 class Post(TimeStampedModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     forum = models.ForeignKey(Forum, on_delete=models.CASCADE)
     text = models.TextField()
 
 
-class Like(TimeStampedModel):
+class LikedPost(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts_liked")
-    comment = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes")

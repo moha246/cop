@@ -15,7 +15,7 @@ class Comment(TimeStampedModel):
     text = models.TextField()
 
 
-class Like(TimeStampedModel):
+class LikedComment(TimeStampedModel):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="comments_liked"
     )

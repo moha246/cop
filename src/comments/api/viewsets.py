@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 
 from comments.api.serializers import CommentSerializer
-from comments.models import Comment, Like
+from comments.models import Comment
 
 
 class CommentViewSet(ModelViewSet):

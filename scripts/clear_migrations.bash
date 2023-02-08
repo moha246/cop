@@ -7,5 +7,6 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-find . -path '*/migrations/*.py' -not -name '__init__.py' -delete
-find . -path "*/migrations/*.pyc" -delete
+find ../src -path "*/migrations/*.py" -not -name "__init__.py" -delete
+find ../src -path "*/migrations/__pycache__" -delete
+find ../src -path "*/__pycache__" -delete

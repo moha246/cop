@@ -1,11 +1,10 @@
-from rest_framework import viewsets
-from comments.models import Comment,Like
-from .serializers import CommentSerializer,LikeSerializer
+from rest_framework.viewsets import ModelViewSet
 
-class CommentViewSet(viewsets.ModelViewSet):
+from comments.models import Comment, Like
+from comments.api.serializers import CommentSerializer
+
+
+class CommentViewSet(ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-
-class LikeViewSet(viewsets.ModelViewSet):
-    queryset = Like.objects.all()
-    serializer_class = LikeSerializer
+    lookup_url_kwarg = "comment_id"

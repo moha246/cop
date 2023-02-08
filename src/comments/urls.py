@@ -1,12 +1,11 @@
-from django.urls import path, include
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from comments.api.viewsets import CommentViewSet,LikeViewSet
 
-router = DefaultRouter()
-router.register(r'comments', CommentViewSet, basename='comment')
-router.register(r'likes', LikeViewSet, basename='like')
+from comments.api.viewsets import CommentViewSet
 
+comments_router = DefaultRouter()
+comments_router.register(r"", CommentViewSet, basename="comments")
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path("", include(comments_router.urls)),
 ]

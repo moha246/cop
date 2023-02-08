@@ -1,7 +1,7 @@
+import sys
 from datetime import timedelta
 from os import getenv
 from pathlib import Path
-import sys
 
 from dotenv import load_dotenv
 
@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "forums.apps.ForumsConfig",
     "tasks.apps.TasksConfig",
+    "posts.apps.PostsConfig",
+    "comments.apps.CommentsConfig",
 ]
 
 MIDDLEWARE = [
@@ -94,10 +96,20 @@ WSGI_APPLICATION = "config.gateways.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR.parent.joinpath("db.sqlite3"),
+        "NAME": BASE_DIR.joinpath("db.sqlite3"),
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'cop',
+#         'USER': 'cop',
+#         'PASSWORD': 'cop',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -288,7 +300,7 @@ SENDGRID_SANDBOX_MODE_IN_DEBUG = bool(getenv("SENDGRID_SANDBOX_MODE_IN_DEBUG", F
 SENDGRID_ECHO_TO_STDOUT = getenv("SENDGRID_ECHO_TO_STDOUT")
 SUPPORT_EMAIL = "<support@cop.org>"
 PLATFORM_TEAM = "<core.team@cop.org>"
-PLATFORM_NAME = "Committee of Practice"
+PLATFORM_NAME = "PHEM Community of Practice"
 SERVER_EMAIL = getenv("SERVER_EMAIL")
 EMAIL_TIMEOUT = 5
 ADMINS = [

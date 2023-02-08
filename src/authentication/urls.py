@@ -5,8 +5,7 @@ from rest_framework_simplejwt.views import (
     token_refresh,
 )
 
-from authentication.api.viewsets import SignUpViewSet
-from authentication.api.viewsets import VerificationViewSet
+from authentication.api.viewsets import SignUpViewSet, VerificationViewSet
 
 app_name = "auth"
 

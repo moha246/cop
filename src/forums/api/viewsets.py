@@ -38,7 +38,7 @@ class ForumViewSet(ModelViewSet):
 
     @action(
         detail=True,
-        methods=("PUT",),
+        methods=("PATCH",),
         url_path="members/(?P<member_id>[0-9]+)/add",
     )
     def members_add(self, request: Request, forum_id: int, member_id: int) -> Response:

@@ -18,9 +18,14 @@ class User(AbstractUser):
 
     last_name = models.CharField(_("last name"), max_length=150)
     first_name = models.CharField(_("first name"), max_length=150)
+    email = models.EmailField(_("email address"), unique=True, db_index=True)
     is_verified = models.BooleanField(_("verified"), default=False)
     role = models.CharField(
-        _("role"), max_length=20, choices=ROLES.choices, default=ROLES.MENTEE
+        _("role"),
+        max_length=20,
+        choices=ROLES.choices,
+        default=ROLES.MENTEE,
+        db_index=True,
     )
 
     @classmethod

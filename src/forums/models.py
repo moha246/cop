@@ -1,12 +1,6 @@
-from django.conf import settings
-from django.db import models
-from django.utils.translation import gettext_lazy as _
-from django_extensions.db.models import TimeStampedModel
+from forums.base_forum import AbstractBaseForum
 
 
-class Forum(TimeStampedModel):
-    name = models.CharField(_("name"), max_length=65)
-    members = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name="members"
-    )
-    creator = models.CharField(_("creator"), max_length=20)
+class Forum(AbstractBaseForum):
+    class Meta(AbstractBaseForum.Meta):
+        swappable = "FORUM_MODEL"

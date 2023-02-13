@@ -8,4 +8,3 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = User.get_response_fields()
-

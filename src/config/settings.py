@@ -48,11 +48,11 @@ INSTALLED_APPS = [
     "drf_spectacular_sidecar",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
-    "authentication.apps.AuthenticationConfig",
-    "users.apps.UsersConfig",
-    "forums.apps.ForumsConfig",
-    "tasks.apps.TasksConfig",
-    "posts.apps.PostsConfig",
+    "authentication",
+    "users",
+    "forums",
+    "tasks",
+    "posts",
 ]
 
 MIDDLEWARE = [
@@ -282,6 +282,8 @@ COMMITTEE_OF_PRACTICE = {
     "MENTORS_PER_FORUM": 2,
     "MENTEES_PER_FORUM": 5,
 }
+
+FORUM_MODEL = "forums.Forum"
 
 # EMAIL
 # ------------------------------------------------------------------------------

@@ -3,9 +3,10 @@ from django.db import models
 
 from django_extensions.db.models import TimeStampedModel
 
-from forums.models import Forum
+from forums import get_forum_model
 
 User = get_user_model()
+Forum = get_forum_model()
 
 
 class Post(TimeStampedModel):
@@ -13,7 +14,7 @@ class Post(TimeStampedModel):
         User, on_delete=models.CASCADE, related_name="posts", db_index=True
     )
     forum = models.ForeignKey(Forum, on_delete=models.CASCADE, db_index=True)
-    content = models.TextField()
+    content = models.TextField(max_length=500)
 
 
 class LikedPost(TimeStampedModel):
@@ -32,7 +33,7 @@ class Comment(TimeStampedModel):
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name="comments", db_index=True
     )
-    content = models.TextField(max_length=500)
+    content = models.TextField(max_length=250)
 
 
 class LikedComment(TimeStampedModel):

@@ -20,13 +20,24 @@ class User(AbstractUser):
     first_name = models.CharField(_("first name"), max_length=150)
     email = models.EmailField(_("email address"), unique=True, db_index=True)
     is_verified = models.BooleanField(_("verified"), default=False)
-    role = models.CharField(
-        _("role"),
+    user_type = models.CharField(
+        _("usertype"),
         max_length=20,
         choices=ROLES.choices,
         default=ROLES.MENTEE,
         db_index=True,
     )
+    avatar = models.ImageField(_("Avatar"), upload_to='images/avatars/', default='images/avatars/default.png')
+    # user_group = models.ForeignKey(UserGroup, null=True, blank=True, on_delete=models.SET_NULL)
+    # user_type = models.CharField(max_length=20, null=True, blank=True, choices=USER_TYPES, default=MENTEE)
+    address = models.CharField(max_length=255, blank=True)
+    organisation = models.CharField(max_length=255, blank=True)
+    dob = models.DateField(auto_now_add=False, null=True, blank=True)
+    phone = models.CharField(max_length=255, null=True, blank=True)
+    designation = models.CharField(max_length=255, blank=True)
+    gender = models.CharField(max_length=255, blank=True)
+    current_state = models.CharField(max_length=255, blank=True)
+    # is_active = models.BooleanField(default=True)
 
     @classmethod
     def get_response_fields(cls) -> tuple[str]:
@@ -36,11 +47,18 @@ class User(AbstractUser):
             "email",
             "first_name",
             "last_name",
-            "role",
+            "user_type",
             "is_active",
             "is_verified",
             "last_login",
             "date_joined",
+            "address",
+            "organisation",
+            "dob",
+            "phone",
+            "designation",
+            "gender",
+            "current_state",
         )
 
     @property

@@ -3,6 +3,7 @@ from typing import Any
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
 from authentication.enums import SignalType
 from authentication.signals.senders import email_verification_signal
@@ -38,3 +39,14 @@ class SignUpSerializer(serializers.ModelSerializer):
         if password2 != password:
             raise serializers.ValidationError("Passwords do not match")
         return password2
+
+class UserSerializerWithToken(serializers.ModelSerializer):
+    token = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'first_name','last_name','avatar', 'token', 'user_type','phone','organisation','address','designation','dob','gender','current_state']
+
+    def get_token(self, obj):
+        token = RefreshToken.for_user(obj)
+        return str(token.access_token)

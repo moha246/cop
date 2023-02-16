@@ -2,6 +2,7 @@ import sys
 from datetime import timedelta
 from os import getenv
 from pathlib import Path
+import os
 
 from dotenv import load_dotenv
 
@@ -48,11 +49,11 @@ INSTALLED_APPS = [
     "drf_spectacular_sidecar",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
-    "authentication.apps.AuthenticationConfig",
-    "users.apps.UsersConfig",
-    "forums.apps.ForumsConfig",
-    "tasks.apps.TasksConfig",
-    "posts.apps.PostsConfig",
+    "authentication",
+    "users",
+    "forums",
+    "tasks",
+    "posts",
 ]
 
 MIDDLEWARE = [
@@ -283,6 +284,8 @@ COMMITTEE_OF_PRACTICE = {
     "MENTEES_PER_FORUM": 5,
 }
 
+FORUM_MODEL = "forums.Forum"
+
 # EMAIL
 # ------------------------------------------------------------------------------
 # SendGrid configurations
@@ -307,3 +310,8 @@ ADMINS = [
     ("alhaji-dalhatu", "mohmusa@gmail.com"),
 ]
 MANAGERS = ADMINS
+
+STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'COP', 'src.media')

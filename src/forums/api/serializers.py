@@ -1,14 +1,13 @@
 import django.contrib.auth.models
+
 from rest_framework.serializers import ModelSerializer
 
-from forums.models import Forum
+from forums import get_forum_model
 from users.api.serializers import UserSerializer
 
 
 class ForumSerializer(ModelSerializer):
-    members = UserSerializer(many=True)
-
     class Meta:
-        model = Forum
-        fields = "__all__"
-        read_only_fields = ("creator",)
+        model = get_forum_model()
+        exclude = ("members",)
+        read_only_fields = model.READ_ONLY_FIELDS

@@ -15,10 +15,11 @@ auth_view_routes = [
 ]
 
 core_api_routes = [
-    path(prefix_api_endpoint("auth"), include("authentication.urls")),
+    path(prefix_api_endpoint("authentication"), include("authentication.urls")),
     path(prefix_api_endpoint("users"), include("users.urls")),
     path(prefix_api_endpoint("tasks"), include("tasks.urls")),
     path(prefix_api_endpoint("forums"), include("forums.urls")),
+    path(prefix_api_endpoint("posts"), include("posts.urls")),
 ]
 
 open_api_routes = [
@@ -39,7 +40,7 @@ open_api_routes = [
     ),
 ]
 
-urlpatterns = auth_view_routes + core_api_routes + open_api_routes
+urlpatterns = auth_view_routes + core_api_routes + open_api_routes + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

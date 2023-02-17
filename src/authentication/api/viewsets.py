@@ -57,16 +57,16 @@ class VerificationViewSet(GenericViewSet):
         )
         return Response(status=HTTP_204_NO_CONTENT)
 
-class PhemTokenPairSerializer(TokenObtainPairSerializer):
-    def validate(self, attrs):
-        data = super().validate(attrs)
-        serilizer = UserSerializerWithToken(self.user).data
+# class PhemTokenPairSerializer(TokenObtainPairSerializer):
+#     def validate(self, attrs):
+#         data = super().validate(attrs)
+#         serilizer = UserSerializerWithToken(self.user).data
         
-        for k, v in serilizer.items():
-            data[k] = v
+#         for k, v in serilizer.items():
+#             data[k] = v
         
-        return data
+#         return data
 
 
-class PhemTokenPairView(TokenObtainPairView):
-    serializer_class = PhemTokenPairSerializer
+# class PhemTokenPairView(TokenObtainPairView):
+#     serializer_class = PhemTokenPairSerializer

@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT
 from rest_framework.viewsets import ModelViewSet
 
+from authentication.utils import has_admin_privileges
 from posts.api.serializers import PostSerializer, CommentSerializer
 from posts.models import Post, Comment, LikedPost, LikedComment
 from posts.schemas import posts_schema_extension
@@ -16,9 +17,12 @@ class PostViewSet(ModelViewSet):
     model = Post
     serializer_class = PostSerializer
     lookup_url_kwarg = "post_id"
-
+    
     def get_queryset(self):
-        return self.model.objects.order_by()
+        user = self.request.user
+        if has_admin_privileges(user):
+            return self.model.objects.order_by()
+        return self.model.filter(forums_members_in=[user.id])
 
     def perform_create(self, serializer: PostSerializer) -> Post:
         serializer.save(posted_by=self.request.user)

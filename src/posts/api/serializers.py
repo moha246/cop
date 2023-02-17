@@ -20,7 +20,8 @@ class CommentSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     likes = serializers.SerializerMethodField(read_only=True)
-    posted_by = serializers.SlugRelatedField(required=False, queryset=User.objects.all(),slug_field='username')
+    # posted_by = serializers.SlugRelatedField(required=False, queryset=User.objects.all(),slug_field='username')
+    posted_by = UserSerializer(read_only=True)
     # is_liked = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -45,11 +46,15 @@ class PostSerializer(serializers.ModelSerializer):
 
         has_admin_privileges = user.is_superuser or user.role == UserRoles.ADMIN
 
-        if not (has_admin_privileges or forum in user.forums):
-            raise serializers.ValidationError(
-                "You do not have permission to post to this forum,\n"
-                "If you feel there is any misunderstanding, kindly reach "
-                "out to an adminstrator to rectify the issue."
-            )
+       
+
+        # check this check is breaking the user posting
+
+        # if not (has_admin_privileges or forum in user.forums):
+        #     raise serializers.ValidationError(
+        #         "You do not have permission to post to this forum,\n"
+        #         "If you feel there is any misunderstanding, kindly reach "
+        #         "out to an adminstrator to rectify the issue."
+        #     )
 
         return forum

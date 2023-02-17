@@ -2,11 +2,12 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
+# from posts.models import Post
 
 
 class BaseForum(TimeStampedModel):
     NAME_FIELD = "name"
-    READ_ONLY_FIELDS = ("id", "members", "creator", "created", "modified")
+    READ_ONLY_FIELDS = ("id", "members", "creator", "created", "modified", "by_forums_post")
 
     class Meta:
         abstract = True
@@ -21,9 +22,11 @@ class BaseForum(TimeStampedModel):
 
 class AbstractBaseForum(BaseForum):
     name = models.CharField(_("name"), max_length=65)
+
     members = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="members", db_index=True
     )
+   
     creator = models.CharField(_("creator"), max_length=20)
 
     class Meta:

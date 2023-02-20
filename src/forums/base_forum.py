@@ -7,7 +7,7 @@ from django_extensions.db.models import TimeStampedModel
 
 class BaseForum(TimeStampedModel):
     NAME_FIELD = "name"
-    READ_ONLY_FIELDS = ("id", "members", "creator", "created", "modified", "by_forums_post")
+    READ_ONLY_FIELDS = ("id", "members", "creator", "created", "modified")
 
     class Meta:
         abstract = True

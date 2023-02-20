@@ -29,9 +29,6 @@ class User(AbstractUser):
         db_index=True,
     )
     avatar = models.ImageField(_("Avatar"), upload_to='images/avatars/', default='images/avatars/default.png')
-    # forums = models.ForeignKey(Forum, null=True, blank=True, on_delete=models.CASCADE, db_index=True)
-    # forums = models.ForeignKey(Forum, null=True, blank=True, on_delete=models.SET_NULL)
-    # user_type = models.CharField(max_length=20, null=True, blank=True, choices=USER_TYPES, default=MENTEE)
     address = models.CharField(max_length=255, blank=True)
     organisation = models.CharField(max_length=255, blank=True)
     date_of_birth = models.DateField(auto_now_add=False, null=True, blank=True)
@@ -39,7 +36,7 @@ class User(AbstractUser):
     designation = models.CharField(max_length=255, blank=True)
     gender = models.CharField(max_length=255, blank=True)
     current_state = models.CharField(max_length=255, blank=True)
-    # is_active = models.BooleanField(default=True)
+   
 
     @classmethod
     def get_response_fields(cls) -> tuple[str]:
@@ -62,7 +59,7 @@ class User(AbstractUser):
             "gender",
             "current_state",
             "avatar",
-            # "forums"
+          
         )
 
     @property

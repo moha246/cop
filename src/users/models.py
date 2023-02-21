@@ -28,7 +28,9 @@ class User(AbstractUser):
         default=ROLES.MENTEE,
         db_index=True,
     )
-    avatar = models.ImageField(_("Avatar"), upload_to='images/avatars/', default='images/avatars/default.png')
+    avatar = models.ImageField(
+        _("Avatar"), upload_to="images/avatars/", default="images/avatars/default.png"
+    )
     address = models.CharField(max_length=255, blank=True)
     organisation = models.CharField(max_length=255, blank=True)
     date_of_birth = models.DateField(auto_now_add=False, null=True, blank=True)
@@ -36,7 +38,6 @@ class User(AbstractUser):
     designation = models.CharField(max_length=255, blank=True)
     gender = models.CharField(max_length=255, blank=True)
     current_state = models.CharField(max_length=255, blank=True)
-   
 
     @classmethod
     def get_response_fields(cls) -> tuple[str]:
@@ -59,7 +60,6 @@ class User(AbstractUser):
             "gender",
             "current_state",
             "avatar",
-          
         )
 
     @property

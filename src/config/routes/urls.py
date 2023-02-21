@@ -40,7 +40,12 @@ open_api_routes = [
     ),
 ]
 
-urlpatterns = auth_view_routes + core_api_routes + open_api_routes + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns = (
+    auth_view_routes
+    + core_api_routes
+    + open_api_routes
+    + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+)
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

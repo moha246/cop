@@ -13,7 +13,9 @@ class Post(TimeStampedModel):
     posted_by = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="posts", db_index=True
     )
-    forum = models.ForeignKey(Forum, on_delete=models.CASCADE, db_index=True)
+    forum = models.ForeignKey(
+        Forum, on_delete=models.CASCADE, db_index=True, related_name="posts"
+    )
     content = models.TextField(max_length=500)
 
 

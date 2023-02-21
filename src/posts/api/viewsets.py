@@ -17,12 +17,13 @@ class PostViewSet(ModelViewSet):
     model = Post
     serializer_class = PostSerializer
     lookup_url_kwarg = "post_id"
-    
+
     def get_queryset(self):
         user = self.request.user
         if has_admin_privileges(user):
             return self.model.objects.order_by()
-        return self.model.filter(forums_members_in=[user.id])
+        forums = self.model.forum.objects.filter(members=user).prefetch_related("posts")
+        return forums.posts.all()
 
     def perform_create(self, serializer: PostSerializer) -> Post:
         serializer.save(posted_by=self.request.user)
@@ -37,7 +38,10 @@ class PostViewSet(ModelViewSet):
         url_path="comments",
     )
     def add_comment(self, request: Request, post_id: int) -> Response:
-        comment_data = {**request.data, **{"commented_by": request.user, "post_id": post_id}}
+        comment_data = {
+            **request.data,
+            **{"commented_by": request.user, "post_id": post_id},
+        }
         comment_serializer = CommentSerializer(data=comment_data)
         comment_serializer.is_valid(raise_exception=True)
         comment_serializer.save()

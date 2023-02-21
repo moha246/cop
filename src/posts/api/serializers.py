@@ -1,12 +1,13 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from posts.models import Post
-from posts.models import Comment
+
+from authentication.roles import UserRoles
+from posts.models import Comment, Post
 from users.api.serializers import UserSerializer
-from src.authentication.roles import UserRoles
 
 
 User = get_user_model()
+
 
 class CommentSerializer(serializers.ModelSerializer):
     commented_by = UserSerializer
@@ -20,7 +21,6 @@ class CommentSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     likes = serializers.SerializerMethodField(read_only=True)
-    # posted_by = serializers.SlugRelatedField(required=False, queryset=User.objects.all(),slug_field='username')
     posted_by = UserSerializer(read_only=True)
     # is_liked = serializers.SerializerMethodField(read_only=True)
 
@@ -35,26 +35,3 @@ class PostSerializer(serializers.ModelSerializer):
     # def get_is_liked(self, post) -> bool:
     #     user = self.context["request"]["user"]
     #     return post.likes.filter(liked_by=user).exists()
-
-    def validate_forum(self, forum) -> int:
-        request = self.context.get('request')
-        if not request:
-            return
-
-        print(request)
-        user = request.user
-
-        has_admin_privileges = user.is_superuser or user.role == UserRoles.ADMIN
-
-       
-
-        # check this check is breaking the user posting
-
-        # if not (has_admin_privileges or forum in user.forums):
-        #     raise serializers.ValidationError(
-        #         "You do not have permission to post to this forum,\n"
-        #         "If you feel there is any misunderstanding, kindly reach "
-        #         "out to an adminstrator to rectify the issue."
-        #     )
-
-        return forum

@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
+
 # from posts.models import Post
 
 
@@ -26,7 +27,7 @@ class AbstractBaseForum(BaseForum):
     members = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="members", db_index=True
     )
-   
+
     creator = models.CharField(_("creator"), max_length=20)
 
     class Meta:

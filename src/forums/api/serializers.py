@@ -8,12 +8,13 @@ from posts.api.serializers import PostSerializer
 
 User = get_user_model()
 
+
 class ForumSerializer(ModelSerializer):
-    members =  UserSerializer(many=True)
+    members = UserSerializer(many=True)
     # by_forums_post = PostSerializer(read_only=True)
 
     class Meta:
         model = get_forum_model()
-        fields = '__all__'
+        fields = "__all__"
         # exclude = ("members",)
         read_only_fields = model.READ_ONLY_FIELDS

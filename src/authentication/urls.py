@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import (
 
 from authentication.api.viewsets import SignUpViewSet, VerificationViewSet
 
-app_name = "auth"
+app_name = "authentication"
 
 urlpatterns = [
     path("refresh/", token_refresh, name="refresh"),

@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 
-
 from authentication.roles import UserRoles
 
 User = get_user_model()

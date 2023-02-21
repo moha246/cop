@@ -3,25 +3,34 @@ from django.contrib.auth import get_user_model
 
 from authentication.roles import UserRoles
 from posts.models import Comment, Post
-from users.api.serializers import UserSerializer
 
 
 User = get_user_model()
 
 
-class CommentSerializer(serializers.ModelSerializer):
-    commented_by = UserSerializer
+class SlimUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (            
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "role",
+            "avatar",
+        )
 
+class CommentSerializer(serializers.ModelSerializer):
+    commented_by = SlimUserSerializer(read_only=True)
     class Meta:
         model = Comment
-        fields = ("id", "content", "commented_by", "created", "modified")
-        read_only_fields = ("id", "commented_by", "created", "modified")
-
+        fields = ("id", "content", "commented_by", "created", "post", "modified")
+        read_only_fields = ("id", "commented_by", "created", "modified", "post")
 
 class PostSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     likes = serializers.SerializerMethodField(read_only=True)
-    posted_by = UserSerializer(read_only=True)
+    posted_by = SlimUserSerializer(read_only=True)
     # is_liked = serializers.SerializerMethodField(read_only=True)
 
     class Meta:

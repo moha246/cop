@@ -13,8 +13,8 @@ load_dotenv()
 API_VERSION = "v1"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-APPS_DIR = BASE_DIR.joinpath("src").as_posix()
+BASE_DIR = Path(__file__).resolve().parent.parent
+APPS_DIR = BASE_DIR.joinpath("apps").as_posix()
 sys.path.insert(0, APPS_DIR)
 
 # Quick-start development settings - unsuitable for production

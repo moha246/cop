@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+
 from drf_spectacular.utils import extend_schema
 from rest_framework.decorators import action
 from rest_framework.mixins import CreateModelMixin
@@ -9,11 +10,8 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_204_NO_CONTENT
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework.viewsets import GenericViewSet
-from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.serializers import (TokenObtainPairSerializer,
-                                                  api_settings)
 
-from authentication.api.serializers import SignUpSerializer,UserSerializerWithToken
+from authentication.api.serializers import SignUpSerializer
 from authentication.enums import SignalType
 from authentication.permissions.permissions import AdminOnly
 from authentication.signals.senders import email_verification_signal
@@ -56,17 +54,3 @@ class VerificationViewSet(GenericViewSet):
             sender=User, user=self.get_object(), signal_type=SignalType.DECLINED
         )
         return Response(status=HTTP_204_NO_CONTENT)
-
-# class PhemTokenPairSerializer(TokenObtainPairSerializer):
-#     def validate(self, attrs):
-#         data = super().validate(attrs)
-#         serilizer = UserSerializerWithToken(self.user).data
-        
-#         for k, v in serilizer.items():
-#             data[k] = v
-        
-#         return data
-
-
-# class PhemTokenPairView(TokenObtainPairView):
-#     serializer_class = PhemTokenPairSerializer

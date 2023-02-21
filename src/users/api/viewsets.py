@@ -5,7 +5,7 @@ from rest_framework.parsers import JSONParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from authentication.permissions.permissions import IsAdminOrReadOnly
+from authentication.permissions.users import IsAdminOrAuthenticatedRetrieveOnly
 from users.api.serializers import UserSerializer
 
 User = get_user_model()
@@ -18,16 +18,11 @@ class UserViewSet(
     mixins.ListModelMixin,
     GenericViewSet,
 ):
-    """
-    A viewset that provides default `create()`, `retrieve()`, `update()`,
-    `partial_update()`, `destroy()` and `list()` actions.
-    """
-
     model = User
     lookup_url_kwarg = "user_id"
     serializer_class = UserSerializer
     parser_classes = (JSONParser, MultiPartParser)
-    permission_classes = (IsAdminOrReadOnly,)
+    permission_classes = (IsAdminOrAuthenticatedRetrieveOnly,)
 
     @action(detail=False, methods=["GET"])
     def me(self, request) -> Response:

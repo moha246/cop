@@ -21,7 +21,7 @@ class PostViewSet(ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         if has_admin_privileges(user):
-            return self.model.objects.order_by()
+            return self.model.objects.order_by('-created')
         forums = self.model.forum.objects.filter(members=user).prefetch_related("posts")
         return forums.posts.all()
 
@@ -30,7 +30,7 @@ class PostViewSet(ModelViewSet):
 
     @action(detail=True, methods=("GET",), url_path="comments",)
     def comments(self, request: Request, post_id: int) -> Response:
-        return Response(ComentSerializer(self.get_object().comments, many=True).data)
+        return Response(CommentSerializer(self.get_object().comments, many=True).data)
 
     @action(
         detail=True,

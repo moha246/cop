@@ -5,8 +5,8 @@ from rest_framework.parsers import JSONParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from authentication.permissions.users import IsAdminOrActionIsMe
 from users.api.serializers import UserSerializer
-from authentication.permissions.permissions import AdminOnly
 
 User = get_user_model()
 
@@ -22,7 +22,7 @@ class UserViewSet(
     lookup_url_kwarg = "user_id"
     serializer_class = UserSerializer
     parser_classes = (JSONParser, MultiPartParser)
-    permission_classes = (AdminOnly,)
+    permission_classes = (IsAdminOrActionIsMe,)
 
     @action(detail=False, methods=["GET"])
     def me(self, request) -> Response:

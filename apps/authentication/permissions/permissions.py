@@ -23,4 +23,3 @@ class IsAdminOrAuthenticatedReadOnly(BasePermission):
 class AdminOnly(BasePermission):
     def has_permission(self, request, view) -> bool:
         return has_admin_privileges(request.user)
-

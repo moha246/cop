@@ -19,7 +19,7 @@ core_api_routes = [
     path(prefix_api_endpoint("users"), include("users.urls")),
     path(prefix_api_endpoint("tasks"), include("tasks.urls")),
     path(prefix_api_endpoint("forums"), include("forums.urls")),
-    path(prefix_api_endpoint("posts"), include("posts.urls")),
+    path(prefix_api_endpoint("", append_slash=False), include("posts.urls")),
 ]
 
 open_api_routes = [

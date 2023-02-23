@@ -8,11 +8,9 @@ from rest_framework.viewsets import ModelViewSet
 
 from authentication.utils import has_admin_privileges
 from posts.api.serializers import PostSerializer, CommentSerializer
-from posts.models import Post, LikedPost, LikedComment
-from posts.schemas import posts_schema_extension
+from posts.models import Post, LikedPost, LikedComment, Comment
 
 
-@posts_schema_extension
 class PostViewSet(ModelViewSet):
     model = Post
     serializer_class = PostSerializer
@@ -21,40 +19,33 @@ class PostViewSet(ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         if has_admin_privileges(user):
-            return self.model.objects.order_by('-created')
+            return self.model.objects.order_by("-created")
         forums = self.model.forum.objects.filter(members=user).prefetch_related("posts")
         return forums.posts.all()
 
     def perform_create(self, serializer: PostSerializer) -> Post:
         serializer.save(posted_by=self.request.user)
 
-    @action(detail=True, methods=["GET", "POST", "PATCH", "DELETE"], url_path="comments(?:/(?P<comment_id>[0-9]+))?")
-    def comments(self, request: Request, post_id: int, comment_id: int | None = None) -> Response:
-        post = self.get_object()
-        request_method = request.method
-        if request_method == "GET":
-            comment_data = CommentSerializer(post.comments, many=True).data
-            return Response(comment_data)
-        elif request_method == "POST":
-            comment_serializer = CommentSerializer(data=request.data)
-            comment_serializer.is_valid(raise_exception=True)
-            comment_serializer.save(post=post, commented_by=request.user)
-            return Response(comment_serializer.data, status=HTTP_201_CREATED)
-        elif request_method == "PATCH":
-            comment = get_object_or_404(post.comments, pk=comment_id)
-            comment_serializer = CommentSerializer(comment, data=request.data)
-            comment_serializer.is_valid(raise_exception=True)
-            comment_serializer.save()
-            return Response(status=HTTP_204_NO_CONTENT)
-        elif request_method == "DELETE":
-            get_object_or_404(post.comments, pk=comment_id).delete()
-            return Response(status=HTTP_204_NO_CONTENT)
 
+class CommentViewSet(ModelViewSet):
+    model = Comment
+    serializer_class = CommentSerializer
+    lookup_url_kwarg = "comment_id"
+    parent_regex = "(?P<post_id>[0-9]+)"
+
+    def get_queryset(self):
+        user = self.request.user
+        if has_admin_privileges(user):
+            return self.model.objects.order_by("-created")
+        return self.model.objects.filter(commented_by=user)
+
+    def perform_create(self, serializer: CommentSerializer) -> Comment:
+        serializer.save(commented_by=self.request.user)
 
     @action(
         detail=True,
         methods=("POST",),
-        url_path="comments/(?P<comment_id>[0-9]+)/like",
+        url_path="like",
     )
     def like_comment(self, request: Request, post_id: int, comment_id: int) -> Response:
         post = self.get_object()
@@ -65,7 +56,7 @@ class PostViewSet(ModelViewSet):
     @action(
         detail=True,
         methods=("DELETE",),
-        url_path="comments/(?P<comment_id>[0-9]+)/unlike",
+        url_path="unlike",
     )
     def unlike_comment(
         self, request: Request, post_id: int, comment_id: int

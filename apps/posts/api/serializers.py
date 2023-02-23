@@ -11,7 +11,7 @@ User = get_user_model()
 class SlimUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = (            
+        fields = (
             "username",
             "email",
             "first_name",
@@ -20,12 +20,15 @@ class SlimUserSerializer(serializers.ModelSerializer):
             "avatar",
         )
 
+
 class CommentSerializer(serializers.ModelSerializer):
     commented_by = SlimUserSerializer(read_only=True)
+
     class Meta:
         model = Comment
         fields = ("id", "content", "commented_by", "created", "post", "modified")
         read_only_fields = ("id", "commented_by", "created", "modified", "post")
+
 
 class PostSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)

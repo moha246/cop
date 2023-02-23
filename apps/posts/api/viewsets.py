@@ -34,13 +34,13 @@ class CommentViewSet(ModelViewSet):
     parent_regex = "(?P<post_id>[0-9]+)"
 
     def get_queryset(self):
-        user = self.request.user
-        if has_admin_privileges(user):
-            return self.model.objects.order_by("-created")
-        return self.model.objects.filter(commented_by=user)
+        return self.model.objects.filter(post_id=self.get_post_id())
+
+    def get_post_id(self) -> int:
+        return self.kwargs.get("post_id")
 
     def perform_create(self, serializer: CommentSerializer) -> Comment:
-        serializer.save(commented_by=self.request.user)
+        serializer.save(commented_by=self.request.user, post_id=self.get_post_id())
 
     @action(
         detail=True,

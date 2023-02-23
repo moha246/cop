@@ -24,6 +24,7 @@ autoflake = "^2.0.0"
 django-sendgrid-v5 = "^1.2.2"
 django-extensions = "^3.2.1"
 pillow = "^9.4.0"
+drf-nested-routers = "^0.93.4"
 
 
 [build-system]

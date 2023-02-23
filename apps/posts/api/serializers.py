@@ -23,15 +23,18 @@ class SlimUserSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     commented_by = SlimUserSerializer(read_only=True)
+    likes = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Comment
-        fields = ("id", "content", "commented_by", "created", "modified")
-        read_only_fields = ("id", "commented_by", "created", "modified")
+        fields = ("id", "content", "commented_by", "created", "modified", "likes")
+        read_only_fields = ("id", "commented_by", "created", "modified", "likes")
+
+    def get_likes(self, comment) -> int:
+        return comment.likes.count()
 
 
 class PostSerializer(serializers.ModelSerializer):
-    likes = serializers.SerializerMethodField(read_only=True)
     posted_by = SlimUserSerializer(read_only=True)
     # is_liked = serializers.SerializerMethodField(read_only=True)
 
@@ -39,9 +42,6 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ("id", "posted_by", "content", "likes", "forum")
         read_only_fields = ("id", "posted_by", "likes")
-
-    def get_likes(self, post) -> int:
-        return post.likes.count()
 
     # def get_is_liked(self, post) -> bool:
     #     user = self.context["request"]["user"]

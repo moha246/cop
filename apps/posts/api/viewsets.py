@@ -28,44 +28,28 @@ class PostViewSet(ModelViewSet):
     def perform_create(self, serializer: PostSerializer) -> Post:
         serializer.save(posted_by=self.request.user)
 
-    @action(detail=True, methods=("GET",), url_path="comments",)
-    def comments(self, request: Request, post_id: int) -> Response:
-        return Response(CommentSerializer(self.get_object().comments, many=True).data)
-
-    @action(
-        detail=True,
-        methods=("POST",),
-        url_path="comments",
-    )
-    def add_comment(self, request: Request, post_id: int) -> Response:
-        comment_serializer = CommentSerializer(data=request.data)
-        comment_serializer.is_valid(raise_exception=True)
-        comment_serializer.save(post=self.get_object(), commented_by=request.user)
-        return Response(comment_serializer.data, status=HTTP_201_CREATED)
-
-    @action(
-        detail=True,
-        methods=("PATCH",),
-        url_path="comments",
-    )
-    def update_comment(self, request: Request, post_id: int) -> Response:
-        comment = get_object_or_404(self.get_object().comments, comment_id)
-        comment_serializer = CommentSerializer(comment, data=request.data)
-        comment_serializer.is_valid(raise_exception=True)
-        comment_serializer.save()
-        return Response(status=HTTP_204_NO_CONTENT)
-
-    @action(
-        detail=True,
-        methods=("DELETE",),
-        url_path="comments/(?P<comment_id>[0-9]+)",
-    )
-    def remove_comment(
-        self, request: Request, post_id: int, comment_id: int
-    ) -> Response:
+    @action(detail=True, methods=["GET", "POST", "PATCH", "DELETE"], url_path="comments(?:/(?P<comment_id>[0-9]+))?")
+    def comments(self, request: Request, post_id: int, comment_id: int | None = None) -> Response:
         post = self.get_object()
-        get_object_or_404(post.comments, id=comment_id).delete()
-        return Response(status=HTTP_204_NO_CONTENT)
+        request_method = request.method
+        if request_method == "GET":
+            comment_data = CommentSerializer(post.comments, many=True).data
+            return Response(comment_data)
+        elif request_method == "POST":
+            comment_serializer = CommentSerializer(data=request.data)
+            comment_serializer.is_valid(raise_exception=True)
+            comment_serializer.save(post=post, commented_by=request.user)
+            return Response(comment_serializer.data, status=HTTP_201_CREATED)
+        elif request_method == "PATCH":
+            comment = get_object_or_404(post.comments, pk=comment_id)
+            comment_serializer = CommentSerializer(comment, data=request.data)
+            comment_serializer.is_valid(raise_exception=True)
+            comment_serializer.save()
+            return Response(status=HTTP_204_NO_CONTENT)
+        elif request_method == "DELETE":
+            get_object_or_404(post.comments, pk=comment_id).delete()
+            return Response(status=HTTP_204_NO_CONTENT)
+
 
     @action(
         detail=True,
@@ -74,7 +58,7 @@ class PostViewSet(ModelViewSet):
     )
     def like_comment(self, request: Request, post_id: int, comment_id: int) -> Response:
         post = self.get_object()
-        comment = get_object_or_404(post.comments, id=comment_id)
+        comment = get_object_or_404(post.comments, pk=comment_id)
         comment.likes.get_or_create(liked_by=request.user, comment=comment)
         return Response(CommentSerializer(comment).data)
 
@@ -87,6 +71,6 @@ class PostViewSet(ModelViewSet):
         self, request: Request, post_id: int, comment_id: int
     ) -> Response:
         post = self.get_object()
-        comment = get_object_or_404(post.comments, id=comment_id)
+        comment = get_object_or_404(post.comments, pk=comment_id)
         get_object_or_404(comment.likes, liked_by=request.user).delete()
         return Response(CommentSerializer(post.comments, many=True).data)

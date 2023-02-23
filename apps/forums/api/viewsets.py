@@ -15,11 +15,13 @@ from forums import get_forum_model
 from forums.api.serializers import ForumSerializer
 from forums.schemas import extend_forums_schema
 from users.api.serializers import UserSerializer
+from forums.schemas import extend_forums_schema
+
+
 
 
 User = get_user_model()
 Forum = get_forum_model()
-
 
 @extend_forums_schema
 class ForumViewSet(ModelViewSet):

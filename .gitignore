@@ -165,3 +165,5 @@ logs
 # Django static and templates
 static/*
 *.sqlite3
+
+media/

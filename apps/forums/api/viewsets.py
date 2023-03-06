@@ -18,10 +18,9 @@ from users.api.serializers import UserSerializer
 from forums.schemas import extend_forums_schema
 
 
-
-
 User = get_user_model()
 Forum = get_forum_model()
+
 
 @extend_forums_schema
 class ForumViewSet(ModelViewSet):

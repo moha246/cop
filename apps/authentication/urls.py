@@ -16,7 +16,7 @@ urlpatterns = [
     path("sign-up/", SignUpViewSet.as_view(dict(post="create")), name="sign-up"),
     path(
         "verification/<int:user_id>/accept/",
-        VerificationViewSet.as_view(dict(put="accept")),
+        VerificationViewSet.as_view(dict(post="accept")),
         name="accept",
     ),
     path(

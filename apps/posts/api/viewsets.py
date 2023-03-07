@@ -7,22 +7,28 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT
 from rest_framework.viewsets import ModelViewSet
 from drf_spectacular.utils import extend_schema
 
-from authentication.utils import has_admin_privileges
+from authentication.utils import has_admin_privileges, has_user_privileges
 from posts.api.serializers import PostSerializer, CommentSerializer
 from posts.models import Post, LikedPost, LikedComment, Comment
+from forums import get_forum_model
 
+
+Forum = get_forum_model()
 
 class PostViewSet(ModelViewSet):
     model = Post
     serializer_class = PostSerializer
     lookup_url_kwarg = "post_id"
-
+    
     def get_queryset(self):
         user = self.request.user
-        if has_admin_privileges(user):
+        if has_user_privileges(user):
             return self.model.objects.order_by("-created")
-        forums = self.model.forum.objects.filter(members=user).prefetch_related("posts")
-        return forums.posts.all()
+        forums = Forum.objects.filter(members=user).prefetch_related("posts")
+        posts = []
+        for forum in forums:
+            posts.extend(forum.posts.all())
+        return posts
 
     def perform_create(self, serializer: PostSerializer) -> Post:
         serializer.save(posted_by=self.request.user)

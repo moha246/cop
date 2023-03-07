@@ -13,3 +13,7 @@ def has_admin_privileges(user: User) -> bool:
     return bool(
         (is_authenticated(user) and user.role == UserRoles.ADMIN) or user.is_superuser
     )
+def has_user_privileges(user: User) -> bool:
+    return bool(
+        (is_authenticated(user) and user.role == UserRoles.ADMIN and user.role == UserRoles.MENTEE and user.role == UserRoles.MENTOR) or user.is_superuser
+    )

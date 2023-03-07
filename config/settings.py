@@ -24,7 +24,7 @@ sys.path.insert(0, APPS_DIR)
 SECRET_KEY = getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = getenv("DJANGO_DEBUG", False)
+DEBUG = getenv("DJANGO_DEBUG", False) and "RENDER" not in os.environ
 
 # Since allowed hosts should hold a list of hosts, the list comprehension
 # helps to handle that, defaulting to an empty list if env key is missing

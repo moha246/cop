@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: cop-api
+    env: python
+    buildCommand: "./scripts/build.sh"
+    startCommand: "gunicorn config.gateways.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4

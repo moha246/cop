@@ -6,13 +6,13 @@ from django.dispatch import receiver
 from authentication.enums import SignalType
 from authentication.signals.senders import email_verification_signal
 
-User = get_user_model()
 
+User = get_user_model()
 
 @receiver(email_verification_signal, sender=User)
 def pending_verification_mail(
     sender, user: User, signal_type: SignalType, **kwargs
-) -> None:
+) -> int | None:
     is_an_admin = user.is_superuser or user.role == user.ROLES.ADMIN
     is_active_and_verified = user.is_verified and user.is_active
 
@@ -78,16 +78,16 @@ Ensure to respond within the next 48 hours.
     """
 
     send_mail(
-        subject,
-        user_message,
-        settings.DEFAULT_FROM_EMAIL,
-        [user.email],
+        subject=subject,
+        message=user_message,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user.email],
         fail_silently=False,
         html_message=user_message,
     )
     mail_admins(
-        admin_mail_subject,
-        admin_message,
+        subject=admin_mail_subject,
+        message=admin_message,
         fail_silently=False,
         html_message=admin_html_message,
     )
@@ -97,7 +97,7 @@ Ensure to respond within the next 48 hours.
 @receiver(email_verification_signal, sender=User)
 def verification_success_mail(
     sender, user: User, signal_type: SignalType, **kwargs
-) -> None:
+) -> int | None:
     is_an_admin = user.is_superuser or user.role == user.ROLES.ADMIN
     is_active_and_verified = user.is_verified and user.is_active
 
@@ -137,10 +137,10 @@ Sincerely,
 <p>{ settings.PLATFORM_TEAM }</p>
     """
     send_mail(
-        subject,
-        user_message,
-        settings.DEFAULT_FROM_EMAIL,
-        [user.email],
+        subject=subject,
+        message=user_message,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user.email],
         fail_silently=False,
         html_message=html_message,
     )
@@ -150,7 +150,7 @@ Sincerely,
 @receiver(email_verification_signal, sender=User)
 def verification_declined_mail(
     sender, user: User, signal_type: SignalType, **kwargs
-) -> None:
+) -> int | None:
     is_an_admin = user.is_superuser or user.role == user.ROLES.ADMIN
     is_active_and_verified = user.is_verified and user.is_active
 
@@ -188,10 +188,10 @@ Best Wishes,
 <p>{ settings.PLATFORM_TEAM }</p>
     """
     send_mail(
-        subject,
-        user_message,
-        settings.DEFAULT_FROM_EMAIL,
-        [user.email],
+        subject=subject,
+        message=user_message,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user.email],
         fail_silently=False,
         html_message=html_message,
     )

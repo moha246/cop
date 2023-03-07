@@ -21,9 +21,10 @@ django-cors-headers = "^3.13.0"
 mypy = "^0.991"
 flake8 = "^6.0.0"
 autoflake = "^2.0.0"
-django-sendgrid-v5 = "^1.2.2"
 django-extensions = "^3.2.1"
 pillow = "^9.4.0"
+sendgrid = "^6.9.7"
+django-sendgrid-v5 = "^1.2.2"
 
 
 [build-system]

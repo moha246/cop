@@ -1,15 +1,16 @@
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 
-from drf_spectacular.utils import extend_schema
 from rest_framework.decorators import action
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.status import HTTP_204_NO_CONTENT
-from rest_framework.throttling import AnonRateThrottle
+from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 from rest_framework.viewsets import GenericViewSet
+
+from drf_spectacular.utils import extend_schema
 
 from authentication.api.serializers import SignUpSerializer
 from authentication.enums import SignalType
@@ -32,6 +33,7 @@ class VerificationViewSet(GenericViewSet):
     permission_classes = (AdminOnly,)
     lookup_url_kwarg = "user_id"
     queryset = User.objects.order_by()
+    throttle_classes = (UserRateThrottle,)
     serializer_class = UserSerializer
 
     @extend_schema(request=None)
@@ -40,7 +42,7 @@ class VerificationViewSet(GenericViewSet):
         user = self.get_object()
         user.is_active = user.is_verified = True
         user.date_joined = timezone.now()
-        user.save(update_fields=["is_verified", "is_active"])
+        user.save(update_fields=["is_verified", "is_active", "date_joined"])
         email_verification_signal.send(
             sender=User, user=self.get_object(), signal_type=SignalType.ACCEPTED
         )

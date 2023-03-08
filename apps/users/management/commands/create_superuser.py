@@ -23,7 +23,7 @@ class Command(BaseCommand):
             "current_state": "Best",
             "gender": "male",
         }
-        if not User.objects.filter(superuser_details["email"]).exists():
+        if not User.objects.filter(email=superuser_details["email"]).exists():
             password = superuser_details.pop("password")
             created = User(**superuser_details)
             user.set_password(password)

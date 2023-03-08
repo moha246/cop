@@ -25,7 +25,7 @@ class Command(BaseCommand):
         }
         if not User.objects.filter(email=superuser_details["email"]).exists():
             password = superuser_details.pop("password")
-            created = User(**superuser_details)
+            user = User(**superuser_details)
             user.set_password(password)
             user.save()
             self.stdout.write(self.style.SUCCESS("Successfully created superuser"))

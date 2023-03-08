@@ -1,9 +1,8 @@
-from django.urls import include, path
-
 from rest_framework.routers import DefaultRouter
+
 from nested_routers.routers import NestedDefaultRouter
 
-from posts.api.viewsets import PostViewSet, CommentViewSet
+from posts.api.viewsets import CommentViewSet, PostViewSet
 
 
 app_name = "posts"
@@ -15,7 +14,4 @@ comments_router = NestedDefaultRouter(posts_router, "posts", lookup="post_id")
 comments_router.register(r"comments", CommentViewSet, basename="comments")
 
 
-urlpatterns = [
-    path("", include(posts_router.urls)),
-    path("", include(comments_router.urls)),
-]
+urlpatterns = posts_router.urls + comments_router.urls

@@ -18,7 +18,7 @@ class Command(BaseCommand):
             "is_superuser": True,
             "is_active": True,
             "is_verified": True,
-            "phone_number": "09025594767",
+            "phone": "09025594767",
             "designation": "Admin Building",
             "current_state": "Best",
             "gender": "male",

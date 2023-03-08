@@ -327,3 +327,21 @@ ADMINS = [
     ("alhaji-dalhatu", "mohmusa@gmail.com"),
 ]
 MANAGERS = ADMINS
+
+DEFAULT_SUPERUSER_DETAILS = {
+    "username": os.getenv("RENDER_USERNAME", "cop"),
+    "password": os.getenv("RENDER_PASWORD", "cop914"),
+    "email": os.getenv("RENDER_EMAIL", "superuser@cop.com"),
+    "first_name": "super",
+    "last_name": "user",
+    "username": "cop",
+    "password": "c0p914",
+    "role": "admin",
+    "is_superuser": True,
+    "is_active": True,
+    "is_verified": True,
+    "phone": "+2349038748333",
+    "designation": "Admin Building",
+    "current_state": "Best",
+    "gender": "male",
+}

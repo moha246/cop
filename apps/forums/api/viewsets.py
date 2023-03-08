@@ -13,6 +13,7 @@ from core.viewsets import PartialModelViewSet
 from forums import get_forum_model
 from forums.api.serializers import ForumSerializer
 from forums.schemas import extend_forums_schema
+from posts.api.serializers import PostSerializer
 from users.api.serializers import UserSerializer
 
 User = get_user_model()
@@ -30,6 +31,10 @@ class ForumViewSet(PartialModelViewSet):
 
     def perform_create(self, serializer: ForumSerializer) -> Forum:
         serializer.save(creator=self.request.user)
+
+    @action(detail=True, methods=("GET",))
+    def posts(self, request: Request, forum_id: int) -> Response:
+        return Response(PostSerializer(self.get_object().posts, many=True).data)
 
     @action(detail=True, methods=("GET",))
     def members(self, request: Request, forum_id: int) -> Response:

@@ -1,9 +1,7 @@
-from rest_framework import serializers
-from django.contrib.auth import get_user_model
-
 from authentication.roles import UserRoles
+from django.contrib.auth import get_user_model
 from posts.models import Comment, Post
-
+from rest_framework import serializers
 
 User = get_user_model()
 

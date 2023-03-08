@@ -26,10 +26,11 @@ Example:
 """
 
 from __future__ import unicode_literals
-import sys
-import re
-from rest_framework.routers import SimpleRouter, DefaultRouter  # noqa: F401
 
+import re
+import sys
+
+from rest_framework.routers import DefaultRouter, SimpleRouter  # noqa: F401
 
 if sys.version_info[0] < 3:
     IDENTIFIER_REGEX = re.compile(r"^[^\d\W]\w*$")

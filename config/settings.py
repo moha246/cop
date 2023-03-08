@@ -334,8 +334,6 @@ DEFAULT_SUPERUSER_DETAILS = {
     "email": os.getenv("RENDER_EMAIL", "superuser@cop.com"),
     "first_name": "super",
     "last_name": "user",
-    "username": "cop",
-    "password": "c0p914",
     "role": "admin",
     "is_superuser": True,
     "is_active": True,

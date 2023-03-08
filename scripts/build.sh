@@ -2,10 +2,7 @@
 # exit on error
 set -o errexit
 
-poetry --version
-poetry self update 1.4.0
-
-poetry install
+pip install -r requirements.txt
 
 python manage.py collectstatic --no-input
 python manage.py makemigrations

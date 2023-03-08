@@ -1,6 +1,6 @@
 from rest_framework.permissions import SAFE_METHODS, BasePermission
 
-from authentication.utils import is_authenticated, has_admin_privileges
+from authentication.utils import has_admin_privileges, is_authenticated
 
 
 class IsAdminOrActionIsMe(BasePermission):

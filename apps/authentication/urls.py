@@ -1,4 +1,5 @@
 from django.urls import path
+
 from rest_framework_simplejwt.views import (
     token_blacklist,
     token_obtain_pair,

@@ -2,8 +2,8 @@ services:
   - type: web
     name: cop-api
     env: python
-    buildCommand: "./scripts/build.sh"
-    startCommand: "gunicorn config.gateways.wsgi:application"
+    buildCommand: "./deploy/scripts/build.sh"
+    startCommand: "gunicorn config.gateways.wsgi:application --workers=8"
     envVars:
       - key: SECRET_KEY
         generateValue: true

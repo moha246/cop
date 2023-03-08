@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import include, path
 from django.views import defaults as default_views
+
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
@@ -15,6 +16,7 @@ auth_view_routes = [
 ]
 
 core_api_routes = [
+    path(prefix_api_endpoint("health-check"), include("core.urls")),
     path(prefix_api_endpoint("authentication"), include("authentication.urls")),
     path(prefix_api_endpoint("users"), include("users.urls")),
     path(prefix_api_endpoint("tasks"), include("tasks.urls")),

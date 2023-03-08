@@ -5,17 +5,18 @@ These fields allow you to specify the style that should be used to represent
 model relationships with hyperlinks.
 """
 from __future__ import unicode_literals
-from functools import (
+
+from functools import (  # import reduce from functools for compatibility with python 3
     reduce,
-)  # import reduce from functools for compatibility with python 3
+)
 
 import rest_framework.relations
+from rest_framework.exceptions import ValidationError
 from rest_framework.relations import (
     ObjectDoesNotExist,
-    ObjectValueError,
     ObjectTypeError,
+    ObjectValueError,
 )
-from rest_framework.exceptions import ValidationError
 
 # fix for basestring
 try:

@@ -1,29 +1,26 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 
-from rest_framework import request
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.status import HTTP_204_NO_CONTENT
 
 from drf_spectacular.utils import extend_schema_view
 
 from authentication.permissions.permissions import AdminOnly
+from core.viewsets import PartialModelViewSet
 from forums import get_forum_model
 from forums.api.serializers import ForumSerializer
 from forums.schemas import extend_forums_schema
 from users.api.serializers import UserSerializer
-from forums.schemas import extend_forums_schema
-
 
 User = get_user_model()
 Forum = get_forum_model()
 
 
 @extend_forums_schema
-class ForumViewSet(ModelViewSet):
+class ForumViewSet(PartialModelViewSet):
     serializer_class = ForumSerializer
     permission_classes = (AdminOnly,)
     lookup_url_kwarg = "forum_id"
@@ -60,4 +57,4 @@ class ForumViewSet(ModelViewSet):
         forum = self.get_object()
         member = get_object_or_404(forum.members, id=member_id)
         forum.members.remove(member)
-        return Response(data=None, status=status.HTTP_204_NO_CONTENT)
+        return Response(data=None, status=HTTP_204_NO_CONTENT)

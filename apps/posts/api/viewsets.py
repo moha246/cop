@@ -1,18 +1,16 @@
+from authentication.utils import has_admin_privileges
+from core.viewsets import PartialModelViewSet
 from django.shortcuts import get_object_or_404
-
+from drf_spectacular.utils import extend_schema
+from posts.api.serializers import CommentSerializer, PostSerializer
+from posts.models import Comment, LikedComment, LikedPost, Post
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT
-from rest_framework.viewsets import ModelViewSet
-from drf_spectacular.utils import extend_schema
-
-from authentication.utils import has_admin_privileges
-from posts.api.serializers import PostSerializer, CommentSerializer
-from posts.models import Post, LikedPost, LikedComment, Comment
 
 
-class PostViewSet(ModelViewSet):
+class PostViewSet(PartialModelViewSet):
     model = Post
     serializer_class = PostSerializer
     lookup_url_kwarg = "post_id"
@@ -28,7 +26,7 @@ class PostViewSet(ModelViewSet):
         serializer.save(posted_by=self.request.user)
 
 
-class CommentViewSet(ModelViewSet):
+class CommentViewSet(PartialModelViewSet):
     model = Comment
     serializer_class = CommentSerializer
     lookup_url_kwarg = "comment_id"

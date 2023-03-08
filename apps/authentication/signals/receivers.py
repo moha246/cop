@@ -6,8 +6,8 @@ from django.dispatch import receiver
 from authentication.enums import SignalType
 from authentication.signals.senders import email_verification_signal
 
-
 User = get_user_model()
+
 
 @receiver(email_verification_signal, sender=User)
 def pending_verification_mail(

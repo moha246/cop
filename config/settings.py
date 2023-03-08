@@ -246,6 +246,7 @@ SPECTACULAR_SETTINGS = {
     "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAuthenticated"],
     "SERVERS": [
         {"url": "http://127.0.0.1:8000", "description": "Local Development server"},
+        {"url": "https://cop-api.onrender.com", "description": "Render server"},
     ],
     "SWAGGER_UI_DIST": "SIDECAR",
     "SWAGGER_UI_FAVICON_HREF": "SIDECAR",

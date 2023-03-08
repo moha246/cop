@@ -2,6 +2,7 @@
 # exit on error
 set -o errexit
 
+poetry --version
 poetry self update 1.4.0
 
 poetry install

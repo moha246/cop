@@ -1,13 +1,17 @@
-from authentication.utils import has_admin_privileges
-from core.viewsets import PartialModelViewSet
-from django.shortcuts import get_object_or_404
-from drf_spectacular.utils import extend_schema
-from posts.api.serializers import CommentSerializer, PostSerializer
-from posts.models import Comment, LikedComment, LikedPost, Post
+from django.shortcuts import get_object_or_404, redirect
+
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT
+from rest_framework.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_403_FORBIDDEN
+from rest_framework.exceptions import PermissionDenied
+
+from drf_spectacular.utils import extend_schema
+
+from authentication.utils import has_admin_privileges
+from core.viewsets import PartialModelViewSet
+from posts.api.serializers import CommentSerializer, PostSerializer
+from posts.models import Comment, LikedComment, LikedPost, Post
 
 
 class PostViewSet(PartialModelViewSet):
@@ -17,10 +21,9 @@ class PostViewSet(PartialModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if has_admin_privileges(user):
-            return self.model.objects.order_by("-created")
-        forums = self.model.forum.objects.filter(members=user).prefetch_related("posts")
-        return forums.posts.all()
+        if not has_admin_privileges(user):
+            raise PermissionDenied()
+        return self.model.objects.order_by("-created")
 
     def perform_create(self, serializer: PostSerializer) -> Post:
         serializer.save(posted_by=self.request.user)
@@ -32,11 +35,11 @@ class CommentViewSet(PartialModelViewSet):
     lookup_url_kwarg = "comment_id"
     parent_regex = "(?P<post_id>[0-9]+)"
 
-    def get_queryset(self):
-        return self.model.objects.filter(post_id=self.get_post_id())
-
     def get_post_id(self) -> int:
         return self.kwargs.get("post_id")
+
+    def get_queryset(self):
+        return self.model.objects.filter(post_id=self.get_post_id())
 
     def perform_create(self, serializer: CommentSerializer) -> Comment:
         serializer.save(commented_by=self.request.user, post_id=self.get_post_id())

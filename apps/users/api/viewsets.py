@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+
 from rest_framework import mixins
 from rest_framework.decorators import action
 from rest_framework.parsers import JSONParser, MultiPartParser
@@ -6,16 +7,18 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from authentication.permissions.users import IsAdminOrActionIsMe
+from core.mixins import PartialUpdateMixin
 from users.api.serializers import UserSerializer
+
 
 User = get_user_model()
 
 
 class UserViewSet(
     mixins.RetrieveModelMixin,
-    mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
     mixins.ListModelMixin,
+    PartialUpdateMixin,
     GenericViewSet,
 ):
     model = User

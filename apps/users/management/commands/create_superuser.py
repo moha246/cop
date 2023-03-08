@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 
 User = get_user_model()
 
-class AutoCreateSuperUserCommand(BaseCommand):
+class Command(BaseCommand):
     help = 'Creates a superuser with default credentials'
 
     def handle(self, *args, **options) -> None:

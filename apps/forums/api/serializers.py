@@ -10,4 +10,4 @@ class ForumSerializer(ModelSerializer):
     class Meta:
         model = get_forum_model()
         fields = "__all__"
-        read_only_fields = model.READ_ONLY_FIELDS
+        read_only_fields = model.READ_ONLY_FIELDS + ["members"]

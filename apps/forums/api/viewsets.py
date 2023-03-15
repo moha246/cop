@@ -15,6 +15,7 @@ from forums.api.serializers import ForumSerializer
 from forums.schemas import extend_forums_schema
 from posts.api.serializers import PostSerializer
 from users.api.serializers import UserSerializer
+from authentication.utils import has_admin_privileges
 
 User = get_user_model()
 Forum = get_forum_model()
@@ -23,18 +24,21 @@ Forum = get_forum_model()
 @extend_forums_schema
 class ForumViewSet(PartialModelViewSet):
     serializer_class = ForumSerializer
-    permission_classes = (AdminOnly,)
+    # permission_classes = (AdminOnly,)
     lookup_url_kwarg = "forum_id"
 
     def get_queryset(self):
-        return Forum.objects.order_by()
+        if has_admin_privileges(self.request.user):
+            return Forum.objects.all()
+        else:
+            return Forum.objects.filter(members=self.request.user)
 
     def perform_create(self, serializer: ForumSerializer) -> Forum:
         serializer.save(creator=self.request.user)
 
     @action(detail=True, methods=("GET",))
     def posts(self, request: Request, forum_id: int) -> Response:
-        return Response(PostSerializer(self.get_object().posts, many=True).data)
+        return Response(PostSerializer(self.get_object().posts.order_by("-created"), many=True).data)
 
     @action(detail=True, methods=("GET",))
     def members(self, request: Request, forum_id: int) -> Response:

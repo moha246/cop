@@ -9,12 +9,14 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_204_NO_CONTENT
 from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 from rest_framework.viewsets import GenericViewSet
+from rest_framework import status
 
 from drf_spectacular.utils import extend_schema
 
 from authentication.api.serializers import SignUpSerializer
 from authentication.enums import SignalType
 from authentication.permissions.permissions import AdminOnly
+from rest_framework.views import APIView
 from authentication.signals.senders import email_verification_signal
 from users.api.serializers import UserSerializer
 
@@ -56,3 +58,18 @@ class VerificationViewSet(GenericViewSet):
             sender=User, user=self.get_object(), signal_type=SignalType.DECLINED
         )
         return Response(status=HTTP_204_NO_CONTENT)
+
+class LogoutAPIView(APIView):
+
+    permission_classes = (AllowAny,)
+
+    def post(self, request):
+
+        try:
+            refresh_token = request.data['refresh_token']
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+        except Exception as e:
+            print(e)
+        return Response(status=status.HTTP_200_OK)
+

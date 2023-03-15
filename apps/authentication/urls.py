@@ -6,14 +6,15 @@ from rest_framework_simplejwt.views import (
     token_refresh,
 )
 
-from authentication.api.viewsets import SignUpViewSet, VerificationViewSet
+from authentication.api.viewsets import SignUpViewSet, VerificationViewSet,LogoutAPIView
 
 app_name = "authentication"
 
 urlpatterns = [
     path("refresh/", token_refresh, name="refresh"),
     path("sign-in/", token_obtain_pair, name="sign-in"),
-    path("sign-out/", token_blacklist, name="sign-out"),
+    # path("sign-out/", token_blacklist, name="sign-out"),
+    path('sign-out/', LogoutAPIView.as_view(), name='sign-out'),
     path("sign-up/", SignUpViewSet.as_view(dict(post="create")), name="sign-up"),
     path(
         "verification/<int:user_id>/accept/",
